@@ -10,15 +10,19 @@ namespace LexiconReactAPI.Models.Entities
 
         [Required]
         public string Name { get; set; }
-        [Required]
-        [ForeignKey("City")]
-        public int CurrentCityId { get; set; }
-        public CityEntity City { get; set; }
 
-        public List<PersonLanguageEntity> Languages { get; set; }
         public string PhoneNumber { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Edited { get; set; }
+
+        [ForeignKey("City")]
+        public int CurrentCityId { get; set; }
+        public CityEntity City { get; set; }
+
+        public int CountryId { get; set; }
+        public CountryEntity Country { get; set; }
+        public List<PersonLanguageEntity> Languages { get; set; }
+        
     }
 }

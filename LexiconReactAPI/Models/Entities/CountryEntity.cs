@@ -10,5 +10,7 @@ namespace LexiconReactAPI.Models.Entities
         public string CountryName { get; set; }
 
         public List<CityEntity> Cities { get; set; }
+
+        public virtual ICollection<PersonEntity> People { get; set; }
     }
 }
