@@ -12,6 +12,6 @@ namespace LexiconReactAPI.Models
         public int CurrentCityId { get; set; }
         public string CountryId { get; set; }
         public string PhoneNumber { get; set; }
-        public string Language { get; set; }
+       // public string Language { get; set; }
     }
 }

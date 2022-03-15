@@ -24,23 +24,42 @@ namespace LexiconReactAPI.Controllers
 
         // GET: api/Person
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PersonEntity>>> GetPeople()
+        public async Task<ActionResult<IEnumerable<PersonModel>>> GetPeople()
         {
-            return await _context.People.ToListAsync();
+            var people = new List<PersonModel>();
+            foreach (var p in await _context.People.Include(x => x.City).ToListAsync())
+                people.Add(new PersonModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    PhoneNumber = p.PhoneNumber,
+                    CityName = p.City.CityName
+                });
+                return people;
         }
 
         // GET: api/Person/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PersonEntity>> GetPersonEntity(int id)
+        public async Task<ActionResult<PersonModel>> GetPersonEntity(int id)
         {
-            var personEntity = await _context.People.FindAsync(id);
+            var personEntity = await _context.People
+                .Include(x => x.City)
+                .Include(x => x.Country)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (personEntity == null)
             {
                 return NotFound();
             }
 
-            return personEntity;
+            return new PersonModel
+            {
+                Id = personEntity.Id,
+                Name = personEntity.Name,    
+                PhoneNumber= personEntity.PhoneNumber,  
+                CityName= personEntity.City.CityName, 
+                CountryName= personEntity.Country.CountryName
+            };
         }
 
         // PUT: api/Person/5

@@ -12,7 +12,7 @@ namespace LexiconReactAPI.Models
         [Required]
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
-        public string Language { get; set; }
+        //public string Language { get; set; }
         
 
 

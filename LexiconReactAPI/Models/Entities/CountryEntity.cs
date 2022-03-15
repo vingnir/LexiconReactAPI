@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LexiconReactAPI.Models.Entities
 {
@@ -11,6 +12,7 @@ namespace LexiconReactAPI.Models.Entities
 
         public List<CityEntity> Cities { get; set; }
 
+        
         public virtual ICollection<PersonEntity> People { get; set; }
     }
 }

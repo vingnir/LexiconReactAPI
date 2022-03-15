@@ -16,10 +16,11 @@ namespace LexiconReactAPI.Models.Entities
         public DateTime Created { get; set; }
         public DateTime Edited { get; set; }
 
-        [ForeignKey("City")]
+       
         public int CurrentCityId { get; set; }
         public CityEntity City { get; set; }
 
+        
         public int CountryId { get; set; }
         public CountryEntity Country { get; set; }
         public List<PersonLanguageEntity> Languages { get; set; }
