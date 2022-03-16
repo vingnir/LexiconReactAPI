@@ -79,7 +79,7 @@ namespace LexiconReactAPI.Controllers
             var personEntity = await _context.People.FindAsync(id);
             personEntity.Name = model.Name;
             personEntity.PhoneNumber = model.PhoneNumber;
-            personEntity.CurrentCityId = model.CurrentCityId;
+            personEntity.CityId = model.CurrentCityId;
             personEntity.CountryId = model.CountryId;
 
             _context.Entry(personEntity).State = EntityState.Modified;
@@ -108,28 +108,36 @@ namespace LexiconReactAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PersonEntity>> PostPersonEntity(PersonCreateModel model)
         {
-            
+            var personEntity = new PersonEntity();
 
             var cityEntity = await _context.Cities.FirstOrDefaultAsync(c => c.CityName == model.CityName);
             var countryEntity = await _context.Countries.FirstOrDefaultAsync(c => c.CountryName == model.CountryName);
             if (cityEntity == null) 
             {
                 cityEntity = new CityEntity { CityName = model.CityName };
+                _context.Cities.Add(cityEntity);
+                await _context.SaveChangesAsync();
             }
             if (countryEntity == null)
             {
                 countryEntity = new CountryEntity { CountryName = model.CountryName };
+                _context.Countries.Add(countryEntity);
+                await _context.SaveChangesAsync();
             }
 
-            var personEntity = new PersonEntity
+            if (countryEntity != null && cityEntity !=null)
+            { 
+                personEntity = new PersonEntity
             {
                 Name = model.Name,
                 PhoneNumber = model.PhoneNumber,
-                CountryId = countryEntity.CountryId,
-                CurrentCityId = cityEntity.CityId
+                CountryId = countryEntity.Id,
+                CityId = cityEntity.CityId
             };
                         
             _context.People.Add(personEntity);
+            }
+
             await _context.SaveChangesAsync();
 
             var p = await _context.People
@@ -139,7 +147,14 @@ namespace LexiconReactAPI.Controllers
 
 
 
-            return CreatedAtAction("GetPersonEntity", new { id = personEntity.Id }, new PersonModel { Id = personEntity.Id, Name = personEntity.Name, PhoneNumber = personEntity.PhoneNumber});
+            return CreatedAtAction("GetPersonEntity", new { id = personEntity.Id },
+                new PersonModel 
+                { Id = p.Id,
+                    Name = p.Name,
+                    PhoneNumber = p.PhoneNumber,
+                    CityName = p.City.CityName,
+                    CountryName = p.Country.CountryName,
+                });
         }
 
         // DELETE: api/Person/5

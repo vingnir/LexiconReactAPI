@@ -6,7 +6,7 @@ namespace LexiconReactAPI.Models.Entities
     public class CountryEntity
     {
         [Key]
-        public int CountryId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string CountryName { get; set; }
        

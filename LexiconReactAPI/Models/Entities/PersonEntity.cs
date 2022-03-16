@@ -17,7 +17,7 @@ namespace LexiconReactAPI.Models.Entities
         public DateTime Edited { get; set; }
 
         
-        public int CurrentCityId { get; set; }
+        public int CityId { get; set; }
         public CityEntity City { get; set; }
 
         public int CountryId { get; set; }

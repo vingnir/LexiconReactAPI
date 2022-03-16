@@ -5,7 +5,7 @@ namespace LexiconReactAPI.Models.Entities
     public class LanguageEntity
     {
         [Key]
-        public int LanguageId { get; set; }
+        public int Id { get; set; }
         
         public string LanguageName { get; set; }
 

@@ -47,7 +47,7 @@ namespace LexiconReactAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountryEntity(int id, CountryEntity countryEntity)
         {
-            if (id != countryEntity.CountryId)
+            if (id != countryEntity.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace LexiconReactAPI.Controllers
             _context.Countries.Add(countryEntity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCountryEntity", new { id = countryEntity.CountryId }, countryEntity);
+            return CreatedAtAction("GetCountryEntity", new { id = countryEntity.Id }, countryEntity);
         }
 
         // DELETE: api/Country/5
@@ -102,7 +102,7 @@ namespace LexiconReactAPI.Controllers
 
         private bool CountryEntityExists(int id)
         {
-            return _context.Countries.Any(e => e.CountryId == id);
+            return _context.Countries.Any(e => e.Id == id);
         }
     }
 }
