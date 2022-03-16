@@ -44,7 +44,6 @@ namespace LexiconReactAPI.Controllers
         {
             var personEntity = await _context.People
                 .Include(x => x.City)
-                .Include(x => x.Country)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (personEntity == null)
@@ -56,9 +55,9 @@ namespace LexiconReactAPI.Controllers
             {
                 Id = personEntity.Id,
                 Name = personEntity.Name,    
-                PhoneNumber= personEntity.PhoneNumber,  
-                CityName= personEntity.City.CityName, 
-                CountryName= personEntity.Country.CountryName
+                PhoneNumber = personEntity.PhoneNumber,  
+                CityName = personEntity.City.CityName, 
+                
             };
         }
 
