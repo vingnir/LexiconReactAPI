@@ -132,7 +132,7 @@ namespace LexiconReactAPI.Controllers
                 Name = model.Name,
                 PhoneNumber = model.PhoneNumber,
                 CountryId = countryEntity.Id,
-                CityId = cityEntity.CityId
+                CityId = cityEntity.Id
             };
                         
             _context.People.Add(personEntity);

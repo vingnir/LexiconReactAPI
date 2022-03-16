@@ -17,10 +17,10 @@ namespace LexiconReactAPI.Models.Entities
         public DateTime Edited { get; set; }
 
         
-        public int CityId { get; set; }
+        public int? CityId { get; set; }
         public CityEntity City { get; set; }
 
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
         public CountryEntity Country { get; set; }  
        
         public List<PersonLanguageEntity> Languages { get; set; }

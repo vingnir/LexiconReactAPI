@@ -47,7 +47,7 @@ namespace LexiconReactAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCityEntity(int id, CityEntity cityEntity)
         {
-            if (id != cityEntity.CityId)
+            if (id != cityEntity.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace LexiconReactAPI.Controllers
             _context.Cities.Add(cityEntity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCityEntity", new { id = cityEntity.CityId }, cityEntity);
+            return CreatedAtAction("GetCityEntity", new { id = cityEntity.Id }, cityEntity);
         }
 
         // DELETE: api/City/5
@@ -102,7 +102,7 @@ namespace LexiconReactAPI.Controllers
 
         private bool CityEntityExists(int id)
         {
-            return _context.Cities.Any(e => e.CityId == id);
+            return _context.Cities.Any(e => e.Id == id);
         }
     }
 }

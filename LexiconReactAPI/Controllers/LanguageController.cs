@@ -47,7 +47,7 @@ namespace LexiconReactAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLanguageEntity(int id, LanguageEntity languageEntity)
         {
-            if (id != languageEntity.LanguageId)
+            if (id != languageEntity.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace LexiconReactAPI.Controllers
             _context.Languages.Add(languageEntity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLanguageEntity", new { id = languageEntity.LanguageId }, languageEntity);
+            return CreatedAtAction("GetLanguageEntity", new { id = languageEntity.Id }, languageEntity);
         }
 
         // DELETE: api/Language/5
@@ -102,7 +102,7 @@ namespace LexiconReactAPI.Controllers
 
         private bool LanguageEntityExists(int id)
         {
-            return _context.Languages.Any(e => e.LanguageId == id);
+            return _context.Languages.Any(e => e.Id == id);
         }
     }
 }
