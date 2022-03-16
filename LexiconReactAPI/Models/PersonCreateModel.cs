@@ -7,12 +7,12 @@ namespace LexiconReactAPI.Models
     {
         [Required]
         public string Name { get; set; }
-        [Required]
-        public string City { get; set; }
-        [Required]
-        public string Country { get; set; }
+        
+        public string CityName { get; set; }
+        
+        public string CountryName { get; set; }
         public string PhoneNumber { get; set; }
-        //public string Language { get; set; }
+        //public string Language { get; set; } TODO
         
 
 

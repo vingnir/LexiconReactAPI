@@ -8,9 +8,9 @@ namespace LexiconReactAPI.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
+       
         public int CurrentCityId { get; set; }
-        public string CountryId { get; set; }
+        public int CountryId { get; set; }
         public string PhoneNumber { get; set; }
        // public string Language { get; set; }
     }

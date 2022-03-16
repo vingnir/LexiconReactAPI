@@ -27,13 +27,17 @@ namespace LexiconReactAPI.Controllers
         public async Task<ActionResult<IEnumerable<PersonModel>>> GetPeople()
         {
             var people = new List<PersonModel>();
-            foreach (var p in await _context.People.Include(x => x.City).ToListAsync())
+            foreach (var p in await _context.People
+                .Include(x => x.City)
+                .Include(x => x.Country)
+                .ToListAsync())
                 people.Add(new PersonModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     PhoneNumber = p.PhoneNumber,
-                    CityName = p.City.CityName
+                    CityName = p.City.CityName, 
+                    CountryName = p.Country.CountryName
                 });
                 return people;
         }
@@ -44,6 +48,7 @@ namespace LexiconReactAPI.Controllers
         {
             var personEntity = await _context.People
                 .Include(x => x.City)
+                 .Include(x => x.Country)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (personEntity == null)
@@ -57,19 +62,25 @@ namespace LexiconReactAPI.Controllers
                 Name = personEntity.Name,    
                 PhoneNumber = personEntity.PhoneNumber,  
                 CityName = personEntity.City.CityName, 
-                
+                CountryName = personEntity.Country.CountryName
             };
         }
 
         // PUT: api/Person/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPersonEntity(int id, PersonEntity personEntity)
+        public async Task<IActionResult> PutPersonEntity(int id, PersonUpdateModel model)
         {
-            if (id != personEntity.Id)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
+
+            var personEntity = await _context.People.FindAsync(id);
+            personEntity.Name = model.Name;
+            personEntity.PhoneNumber = model.PhoneNumber;
+            personEntity.CurrentCityId = model.CurrentCityId;
+            personEntity.CountryId = model.CountryId;
 
             _context.Entry(personEntity).State = EntityState.Modified;
 
@@ -95,16 +106,38 @@ namespace LexiconReactAPI.Controllers
         // POST: api/Person
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PersonModel>> PostPersonEntity(PersonCreateModel model)
+        public async Task<ActionResult<PersonEntity>> PostPersonEntity(PersonCreateModel model)
         {
-            var personEntity = new PersonEntity()
+            
+
+            var cityEntity = await _context.Cities.FirstOrDefaultAsync(c => c.CityName == model.CityName);
+            var countryEntity = await _context.Countries.FirstOrDefaultAsync(c => c.CountryName == model.CountryName);
+            if (cityEntity == null) 
+            {
+                cityEntity = new CityEntity { CityName = model.CityName };
+            }
+            if (countryEntity == null)
+            {
+                countryEntity = new CountryEntity { CountryName = model.CountryName };
+            }
+
+            var personEntity = new PersonEntity
             {
                 Name = model.Name,
-                //CurrentCityId = model.CurrentCityId,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+                CountryId = countryEntity.CountryId,
+                CurrentCityId = cityEntity.CityId
             };
+                        
             _context.People.Add(personEntity);
             await _context.SaveChangesAsync();
+
+            var p = await _context.People
+                .Include(x => x.Country)
+                .Include(x => x.City)
+                .FirstOrDefaultAsync(x => x.Id == personEntity.Id);
+
+
 
             return CreatedAtAction("GetPersonEntity", new { id = personEntity.Id }, new PersonModel { Id = personEntity.Id, Name = personEntity.Name, PhoneNumber = personEntity.PhoneNumber});
         }
